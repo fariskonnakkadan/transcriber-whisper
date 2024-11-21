@@ -35,3 +35,65 @@ Before using this script, ensure you have the following:
 - **Dependencies**:
   ```bash
   pip install whisper pydub tqdm torch
+
+## Basic Knowledge
+This script assumes a basic understanding of the following:
+
+Python: Familiarity with running Python scripts and installing dependencies.
+Command Line: Experience using terminal or command prompt for executing commands.
+Machine Learning Models: Basic knowledge of AI/ML models (helpful but not mandatory).
+## Usage
+## Command
+ ```bash
+ python transcriber.py --input <input_audio_file> --output <output_text_file> [--device <device_list>] [--model <model_name>]
+```
+
+## Arguments
+- --input: Path to the input audio file (e.g., meeting_recording.wav).
+- --output: Path to the output text file (e.g., transcription.txt).
+- --device (optional): Devices to use for processing, e.g., cpu,cuda. Defaults to cpu,cuda.
+- --model (optional): Whisper model to use (tiny, base, small, medium, large). Defaults to large.
+
+## Example
+Transcribe an audio file using both CPU and GPU with the large model:
+
+```bash
+python transcriber.py --input meeting.wav --output transcription.txt --device cpu,cuda --model large
+```
+
+## Technologies Used
+Whisper: State-of-the-art transcription model.
+- PyDub: Audio processing library.
+-  TQDM: Real-time progress bar visualization.
+-   Torch: For GPU (CUDA) processing support.
+
+## Script Highlights
+### Silent Mode
+The Silent class suppresses logs for a cleaner output:
+
+```python
+class Silent:
+    def __init__(self, allow_tqdm=False):
+        # Initializes silent mode
+```
+
+### Parallel Processing
+Threads handle transcription on multiple devices concurrently:
+
+```python
+
+threads.append(threading.Thread(target=process_chunks, args=(indices, device), daemon=True))
+```
+Chunk Management
+Audio files are split into manageable durations for processing:
+
+```python
+chunk = audio[start_ms:end_ms]
+chunk.export(chunk_file, format="wav")
+```
+## Known Limitations
+### Long Audio Files:
+Very long files may require significant memory for processing.
+### CUDA Availability:
+
+Ensure `torch.cuda.is_available()` returns True for GPU usage.
